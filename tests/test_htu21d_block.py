@@ -31,7 +31,21 @@ class TestHTU21D(NIOBlockTestCase):
                               "humidity": -6.0})
 
     @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
-    def test_invalid_read_bytes(self, mock_i2c):
+    def test_bad_read_bytes(self, mock_i2c):
+        """ Test when _i2c.read_bytes fails """
+        blk = HTU21D()
+        self.configure_block(blk, {})
+        blk._i2c.read_bytes.side_effect = Exception()
+        blk.start()
+        blk.process_signals([Signal()])
+        blk.stop()
+        self.assert_num_signals_notified(1)
+        self.assertDictEqual(self.last_notified['default'][0].to_dict(),
+                             {"temperature": None,
+                              "humidity": None})
+
+    @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
+    def test_invalid_read_bytes_response(self, mock_i2c):
         """ Test when response returns less that three bytes """
         blk = HTU21D()
         self.configure_block(blk, {})

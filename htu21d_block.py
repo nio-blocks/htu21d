@@ -32,32 +32,36 @@ class HTU21D(I2CBase):
         return Signal(value)
 
     def _read_temperature(self):
-        self._i2c.write_list(0xE3, [])
-        sleep(0.05)
-        response = self._i2c.read_bytes(3)
-        if not self._crc8check(response):
+        try:
+            high, low, crc = self._read_sensor(0xE3)
+        except:
+            # Catch _read_sensor exeptions amd whem it returns None
+            self._logger.warning("Failed to read temperature")
             return
-        temphigh = response[0]
-        templow = response[1]
-        crc = response[2]
         _STATUS_LSBMASK = 0b11111100
-        temp = (temphigh << 8) | (templow & _STATUS_LSBMASK)
+        temp = (high << 8) | (low & _STATUS_LSBMASK)
         temperature = -46.85 + (175.72 * temp) / 2**16
         return temperature
 
     def _read_humidity(self):
-        self._i2c.write_list(0xE5, [])
+        try:
+            high, low, crc = self._read_sensor(0xE5)
+        except:
+            # Catch _read_sensor exeptions amd whem it returns None
+            self._logger.warning("Failed to read humidity")
+            return
+        _STATUS_LSBMASK = 0b11111100
+        humid = (high << 8) | (low & _STATUS_LSBMASK)
+        humidity = -6 + (125.0 * humid) / 2**16
+        return humidity
+
+    def _read_sensor(self, write_register):
+        self._i2c.write_list(write_register, [])
         sleep(0.05)
         response = self._i2c.read_bytes(3)
         if not self._crc8check(response):
             return
-        humidhigh = response[0]
-        humidlow = response[1]
-        crc = response[2]
-        _STATUS_LSBMASK = 0b11111100
-        humid = (humidhigh << 8) | (humidlow & _STATUS_LSBMASK)
-        humidity = -6 + (125.0 * humid) / 2**16
-        return humidity
+        return response[0], response[1], response[2]
 
     def _crc8check(self, value):
         """Calulate the CRC8 for the data received"""
