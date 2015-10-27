@@ -16,7 +16,7 @@ class TestHTU21D(NIOBlockTestCase):
     def signals_notified(self, signals, output_id='default'):
         self.last_notified[output_id].extend(signals)
 
-    @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
+    @patch(I2CBase.__module__ + ".FT232H_I2CDevice", spec=FT232H_I2CDevice)
     def test_defaults(self, mock_i2c):
         blk = HTU21D()
         self.configure_block(blk, {})
@@ -30,7 +30,7 @@ class TestHTU21D(NIOBlockTestCase):
                              {"temperature": -46.85,
                               "humidity": -6.0})
 
-    @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
+    @patch(I2CBase.__module__ + ".FT232H_I2CDevice", spec=FT232H_I2CDevice)
     def test_bad_read_bytes(self, mock_i2c):
         """ Test when _i2c.read_bytes fails """
         blk = HTU21D()
@@ -44,7 +44,7 @@ class TestHTU21D(NIOBlockTestCase):
                              {"temperature": None,
                               "humidity": None})
 
-    @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
+    @patch(I2CBase.__module__ + ".FT232H_I2CDevice", spec=FT232H_I2CDevice)
     def test_invalid_read_bytes_response(self, mock_i2c):
         """ Test when response returns less that three bytes """
         blk = HTU21D()
@@ -59,7 +59,7 @@ class TestHTU21D(NIOBlockTestCase):
                              {"temperature": None,
                               "humidity": None})
 
-    @patch(I2CBase.__module__ + ".I2CDevice", spec=I2CDevice)
+    @patch(I2CBase.__module__ + ".FT232H_I2CDevice", spec=FT232H_I2CDevice)
     def test_crc8_check(self, mock_i2c):
         """ Test when crc8 check fails """
         blk = HTU21D()
