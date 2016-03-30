@@ -1,8 +1,8 @@
 from time import sleep
 from enum import Enum
-from nio.common.signal.base import Signal
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import VersionProperty, SelectProperty
+from nio.signal.base import Signal
+from nio.util.discovery import discoverable
+from nio.properties import VersionProperty, SelectProperty
 from .i2c_base.i2c_base import I2CBase
 
 
@@ -10,7 +10,7 @@ class Platform(Enum):
     ft232h = 1
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class HTU21D(I2CBase):
 
     """ Read temparature and humidity from an htu21d sensor chip """
@@ -20,17 +20,17 @@ class HTU21D(I2CBase):
                               title='Platform',
                               default=Platform.ft232h)
 
-    def process_signals(self, signals, input_id='default'):
+    def process_signals(self, signals):
         signals_to_notify = []
         for signal in signals:
             signals_to_notify.append(self._read_htu(signal))
-        self.notify_signals(signals_to_notify, output_id='default')
+        self.notify_signals(signals_to_notify)
 
     def _read_htu(self, signal):
         temperature = self._read_temperature()
-        self._logger.debug("Temperature: {}".format(temperature))
+        self.logger.debug("Temperature: {}".format(temperature))
         humidity = self._read_humidity()
-        self._logger.debug("Humidity: {}".format(humidity))
+        self.logger.debug("Humidity: {}".format(humidity))
         return self.get_output_signal({"temperature": temperature,
                                        "humidity": humidity},
                                       signal)
@@ -44,7 +44,7 @@ class HTU21D(I2CBase):
             high, low, crc = self._read_sensor(0xE3)
         except:
             # Catch _read_sensor exeptions amd whem it returns None
-            self._logger.warning("Failed to read temperature")
+            self.logger.warning("Failed to read temperature")
             return
         _STATUS_LSBMASK = 0b11111100
         temp = (high << 8) | (low & _STATUS_LSBMASK)
@@ -56,7 +56,7 @@ class HTU21D(I2CBase):
             high, low, crc = self._read_sensor(0xE5)
         except:
             # Catch _read_sensor exeptions amd whem it returns None
-            self._logger.warning("Failed to read humidity")
+            self.logger.warning("Failed to read humidity")
             return
         _STATUS_LSBMASK = 0b11111100
         humid = (high << 8) | (low & _STATUS_LSBMASK)
@@ -78,7 +78,7 @@ class HTU21D(I2CBase):
             remainder = ( ( value[0] << 8 ) + value[1] ) << 8
             remainder |= value[2]
         except:
-            self._logger.warning(
+            self.logger.warning(
                 "Temp/Humidy read bytes response is invalid: {}".format(value))
             return False
         # POLYNOMIAL = 0x0131 = x^8 + x^5 + x^4 + 1
@@ -91,5 +91,5 @@ class HTU21D(I2CBase):
         if remainder == 0:
             return True
         else:
-            self._logger.warning("Failed crc8 check: {}".format(value))
+            self.logger.warning("Failed crc8 check: {}".format(value))
             return False
