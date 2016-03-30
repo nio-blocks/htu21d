@@ -6,19 +6,12 @@ from nio.properties import VersionProperty, SelectProperty
 from .i2c_base.i2c_base import I2CBase
 
 
-class Platform(Enum):
-    ft232h = 1
-
-
 @discoverable
 class HTU21D(I2CBase):
 
     """ Read temparature and humidity from an htu21d sensor chip """
 
     version = VersionProperty('0.1.0')
-    platform = SelectProperty(Platform,
-                              title='Platform',
-                              default=Platform.ft232h)
 
     def process_signals(self, signals):
         signals_to_notify = []
