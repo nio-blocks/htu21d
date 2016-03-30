@@ -37,7 +37,7 @@ class HTU21D(I2CBase):
             high, low, crc = self._read_sensor(0xE3)
         except:
             # Catch _read_sensor exeptions amd whem it returns None
-            self.logger.warning("Failed to read temperature")
+            self.logger.warning("Failed to read temperature", exc_info=True)
             return
         _STATUS_LSBMASK = 0b11111100
         temp = (high << 8) | (low & _STATUS_LSBMASK)
@@ -49,7 +49,7 @@ class HTU21D(I2CBase):
             high, low, crc = self._read_sensor(0xE5)
         except:
             # Catch _read_sensor exeptions amd whem it returns None
-            self.logger.warning("Failed to read humidity")
+            self.logger.warning("Failed to read humidity", exc_info=True)
             return
         _STATUS_LSBMASK = 0b11111100
         humid = (high << 8) | (low & _STATUS_LSBMASK)
