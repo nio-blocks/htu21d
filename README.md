@@ -5,7 +5,7 @@ Read temperature and humidity from an htu21d sensor chip.
 
 Properties
 ----------
-* **Platform**
+* **Platform**: Platform 
 
 Dependencies
 ------------
