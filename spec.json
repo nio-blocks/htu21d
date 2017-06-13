@@ -1,18 +1,19 @@
 {
-  "nio/HTU21D": {
-    "Dependencies": [
-      "None"
-    ],
-    "Output": "Each signal has a `temperature` and `humidity` attribute added to the input signal.\nIf the sensors fails to read from either sensors, the new attribute value will be `None`.",
-    "Properties": {
-      "* Platform": {
-        "description": "Platform"
-      }
-    },
-    "Description": "Read temperature and humidity from an htu21d sensor chip.",
-    "Version": "1.0.0",
-    "Category": "Hardware",
-    "Input": "Any list of signals.",
-    "Commands": {}
-  }
+    "nio/HTU21D": {
+        "Description": "Read temperature and humidity from an htu21d sensor chip.",
+        "Category": "Hardware",
+        "Properties": {
+            "* Platform": {
+                "description": "Platform"
+            }
+        },
+        "Commands": {},
+        "Output": {
+            "Description": "Each signal has a `temperature` and `humidity` attribute added to the input signal.\nIf the sensors fails to read from either sensors, the new attribute value will be `None`."
+        },
+        "Input": {
+            "Description": "Any list of signals."
+        },
+        "Version": "1.0.0"
+    }
 }
