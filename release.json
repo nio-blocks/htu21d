@@ -1,7 +1,7 @@
 {
   "nio/HTU21D": {
     "language": "Python",
-    "version": "0.0.1",
-    "reference": "github.com/nio-blocks/htu21d.git@v0.0.1"
+    "url": "git://github.com/nio-blocks/htu21d.git",
+    "version": "0.1.0"
   }
 }

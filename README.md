@@ -1,26 +1,27 @@
 HTU21D
 ======
 
-Read temperature and humidity from an htu21d sensor chip.
+Read temparature and humidity from an htu21d sensor chip
 
 Properties
 ----------
-* **Platform**: Platform 
+- **address**: I2C Address
+- **platform**: Development platform
+
+Inputs
+------
+
+Any list of signals.
+
+Outputs
+-------
+
+Each signal has a `temperature` and `humidity` attribute added to the input signal.
+If the sensors fails to read from either sensors, the new attribute value will be `None`.
+
+Commands
+--------
 
 Dependencies
 ------------
 None
-
-Commands
---------
-None
-
-Input
------
-Any list of signals.
-
-Output
-------
-Each signal has a `temperature` and `humidity` attribute added to the input signal.
-
-If the sensors fails to read from either sensors, the new attribute value will be `None`.
