@@ -1,8 +1,9 @@
 from time import sleep
-from enum import Enum
+
 from nio.signal.base import Signal
 from nio.util.discovery import discoverable
-from nio.properties import VersionProperty, SelectProperty
+from nio.properties import VersionProperty
+
 from .i2c_base.i2c_base import I2CBase
 
 
@@ -29,7 +30,7 @@ class HTU21D(I2CBase):
                                       signal)
 
     def get_output_signal(self, value, signal):
-        #TODO: move to mixin
+        # TODO: move to mixin
         return Signal(value)
 
     def _read_temperature(self):
@@ -67,18 +68,20 @@ class HTU21D(I2CBase):
     def _crc8check(self, value):
         """Calulate the CRC8 for the data received"""
         try:
-            # Ported from Sparkfun Arduino HTU21D Library: https://github.com/sparkfun/HTU21D_Breakout
-            remainder = ( ( value[0] << 8 ) + value[1] ) << 8
+            # Ported from Sparkfun Arduino HTU21D Library:
+            # https://github.com/sparkfun/HTU21D_Breakout
+            remainder = ((value[0] << 8) + value[1]) << 8
             remainder |= value[2]
         except:
             self.logger.warning(
                 "Temp/Humidy read bytes response is invalid: {}".format(value))
             return False
         # POLYNOMIAL = 0x0131 = x^8 + x^5 + x^4 + 1
-        # divsor = 0x988000 is the 0x0131 polynomial shifted to farthest left of three bytes
+        # divsor = 0x988000 is the 0x0131 polynomial shifted to farthest
+        # left of three bytes
         divsor = 0x988000
         for i in range(0, 16):
-            if( remainder & 1 << (23 - i) ):
+            if remainder & 1 << (23 - i):
                 remainder ^= divsor
             divsor = divsor >> 1
         if remainder == 0:

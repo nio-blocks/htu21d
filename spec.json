@@ -1,10 +1,31 @@
 {
   "nio/HTU21D": {
-    "version": "0.0.1",
-    "description": "",
-    "inputs": {},
-    "outputs": {},
-    "properties": {},
+    "version": "0.1.0",
+    "description": "Read temparature and humidity from an htu21d sensor chip",
+    "properties": {
+      "address": {
+        "title": "I2C Address",
+        "type": "StringType",
+        "description": "I2C address",
+        "default": "0x00"
+      },
+      "platform": {
+        "title": "Platform",
+        "type": "SelectType",
+        "description": "Development platform",
+        "default": 0
+      }
+    },
+    "inputs": {
+      "default": {
+        "description": "Any list of signals"
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "One temperature and humidity reading for each input signal"
+      }
+    },
     "commands": {}
   }
 }
