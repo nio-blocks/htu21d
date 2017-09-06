@@ -2,6 +2,9 @@
   "nio/HTU21D": {
     "version": "0.1.0",
     "description": "Read temparature and humidity from an htu21d sensor chip",
+    "categories": [
+      "Hardware"
+    ],
     "properties": {
       "address": {
         "title": "I2C Address",
