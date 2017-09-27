@@ -1,7 +1,7 @@
 HTU21D
 ======
 
-Read temparature and humidity from an htu21d sensor chip
+Read temperature and humidity from an htu21d sensor chip
 
 Properties
 ----------
