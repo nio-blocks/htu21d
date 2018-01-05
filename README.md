@@ -1,12 +1,12 @@
 HTU21D
 ======
 
-Read temperature and humidity from an htu21d sensor chip
+Read temperature and humidity from an htu21d sensor chip.
 
 Properties
 ----------
-- **address**: I2C Address
-- **platform**: Development platform
+- **address**: I2C Address.
+- **platform**: Development platform.
 
 Inputs
 ------
